@@ -15,5 +15,5 @@
 <div class="global-popup" id="request-package-quote-popup">
     <p class="h3"><?= __('Request a quote', 'bgpk'); ?></p>
     <p><?= __('Fill in the form below and we will get back to you as soon as possible.', 'bgpk'); ?></p>
-    <?= do_shortcode('[gravityform id="5" title="false" description="false" ajax="true"]'); ?>
+    <?= do_shortcode('[gravityform id="4" title="false" description="false" ajax="true"]'); ?>
 </div>
