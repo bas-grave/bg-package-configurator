@@ -33,7 +33,7 @@ class Package_Configurator
 
         add_shortcode('package_configurator', array($this, 'render_package_configurator'));
 
-        add_filter('get_terms', array($this, 'filter_out_configurator_product_cat'), 10, 3);
+        // add_filter('get_terms', array($this, 'filter_out_configurator_product_cat'), 10, 3);
 
         add_filter('wpseo_robots', array($this, 'set_robots_for_configurator_products'), 999);
         
@@ -57,11 +57,7 @@ class Package_Configurator
     
             wp_set_object_terms($post_id, array('exclude-from-catalog', 'exclude-from-search'), 'product_visibility');
     
-        } else {
-    
-            wp_remove_object_terms($post_id, array('exclude-from-catalog', 'exclude-from-search'), 'product_visibility');
-
-        }
+        } 
 
     }
     
@@ -69,7 +65,7 @@ class Package_Configurator
     {
         $new_terms = array();
 
-        if (in_array('product_cat', $taxonomies) && ! is_admin()) {
+        if (in_array('product_cat', $taxonomies) && ! is_admin() ) {
 
             foreach ($terms as $key => $term) {
 
