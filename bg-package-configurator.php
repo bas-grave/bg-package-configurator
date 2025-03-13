@@ -26,61 +26,52 @@ class Package_Configurator
 {
 
     public function __construct()
-    {        
-        
+    {
+
         add_action('plugins_loaded', array($this, 'load_textdomain'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 
         add_shortcode('package_configurator', array($this, 'render_package_configurator'));
 
-        // add_filter('get_terms', array($this, 'filter_out_configurator_product_cat'), 10, 3);
+        add_filter('get_terms', array($this, 'filter_out_configurator_product_cat'), 10, 3);
 
         add_filter('wpseo_robots', array($this, 'set_robots_for_configurator_products'), 999);
-        
-        add_filter('wpseo_exclude_from_sitemap_by_post_ids', array($this, 'exclude_configurator_products_from_sitemap'));
-        
-        add_action('save_post_product', array( $this, 'bgpk_set_visibility_for_configurator_products'), 20, 3);
 
+        add_filter('wpseo_exclude_from_sitemap_by_post_ids', array($this, 'exclude_configurator_products_from_sitemap'));
+
+        add_action('save_post_product', array($this, 'bgpk_set_visibility_for_configurator_products'), 20, 3);
     }
 
-    function bgpk_set_visibility_for_configurator_products($post_id, $post, $update) {
-    
+    function bgpk_set_visibility_for_configurator_products($post_id, $post, $update)
+    {
+
         if (wp_is_post_revision($post_id) || defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-    
+
         if ('product' !== $post->post_type) {
             return;
         }
-    
-        if (has_term('configurator', 'product_cat', $post_id)) {
-    
-            wp_set_object_terms($post_id, array('exclude-from-catalog', 'exclude-from-search'), 'product_visibility');
-    
-        } 
 
+        if (has_term('configurator', 'product_cat', $post_id)) {
+
+            wp_set_object_terms($post_id, array('exclude-from-catalog', 'exclude-from-search'), 'product_visibility');
+        }
     }
-    
-    public function filter_out_configurator_product_cat($terms, $taxonomies, $args)
+
+    function filter_out_configurator_product_cat($terms, $taxonomies, $args)
     {
         $new_terms = array();
-
-        if (in_array('product_cat', $taxonomies) && ! is_admin() ) {
-
+        if (in_array('product_cat', $taxonomies) && ! is_admin() && is_shop()) {
             foreach ($terms as $key => $term) {
-
-                if (is_object($term) && ! in_array($term->slug, array('configurator'))) {
+                if (! in_array($term->slug, array('configurator'))) { 
                     $new_terms[] = $term;
                 }
-
             }
-
             $terms = $new_terms;
-
         }
-
         return $terms;
-    }  
+    }
 
     public function exclude_configurator_products_from_sitemap($excluded_posts)
     {
