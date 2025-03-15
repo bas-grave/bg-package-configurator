@@ -39,7 +39,7 @@ if (!empty($configurator_children) && !is_wp_error($configurator_children)) :
                 $product_id    = $product->get_id();
                 $product_title = get_the_title();
                 $product_type  = $product->get_type();
-                $product_img   = get_the_post_thumbnail_url($product_id, 'medium'); // Get product image (medium size)
+                $product_img   = get_the_post_thumbnail_url($product_id, 'small'); 
             ?>
                 <div class="package-product-item" 
                     data-product-id="<?php echo esc_attr($product_id); ?>" 
