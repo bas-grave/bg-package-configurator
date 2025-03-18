@@ -2,13 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedProducts = [];
     let debounceTimer = null;
 
-    
-    let textArea = document.querySelector('.form-package-items textarea'); 
-
-    if( textArea ) {
-        textArea.disabled = true;
-    }
-    
     Fancybox.bind("[data-fancybox]", {
     });
 
